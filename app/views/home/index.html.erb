@@ -1,19 +1,23 @@
 <div class="text-center my-24">
+  <p>
+    <%= image_tag("cabin-woodpile.png", class: "w-full lg:w-3/5") %>
+  </p>
+  <br>
   <h1 class="tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-    <span>Starter Kit</span><br>
-    <span class="text-indigo-600">Rails + Ralix + Tailwind</span>
+    <span>Fire Adapted Alaska</span><br>
+    <span class="text-indigo-600">Structure Vulnerability Assessor</span>
   </h1>
 
   <p class="mt-5 mb-10 text-gray-500 sm:text-lg md:text-xl">
-    Starter Kit to build Rails applications fast, with Ralix, Tailwind and more!
+    See what your home's risk is and what you can do to protect it from wildfire!
   </p>
-
-  <a href="https://github.com/ralixjs/rails-ralix-tailwind" class="btn" target="_blank">
+  
+  <a href="<%= articles_path %>"  class="btn" target="_blank">
     <%= heroicon 'book-open' %>
     Get started
   </a>
-  <a href="<%= articles_path %>" class="btn btn-outline ml-4">
-    <%= heroicon 'squares-2x2' %>
-    Explore app
+  <a href="<%= new_assessment_path %>" class="btn btn-outline ml-4">
+    <%= heroicon 'home' %>
+    Assessment
   </a>
 </div>

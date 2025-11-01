@@ -1,0 +1,12 @@
+<!-- app/views/assessments/_assessment_field.html.erb -->
+<div>
+  <dt class="text-sm font-medium text-gray-500"><%= label %></dt>
+  <dd class="mt-1 text-sm text-gray-900">
+    <%= value %>
+    <% if defined?(score_impact) && score_impact %>
+      <span class="text-xs <%= score_impact > 0 ? 'text-red-600' : 'text-green-600' %> ml-2">
+        (<%= score_impact > 0 ? '+' : '' %><%= score_impact %>)
+      </span>
+    <% end %>
+  </dd>
+</div>

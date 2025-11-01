@@ -1,0 +1,523 @@
+<!-- app/views/assessments/_form.html.erb -->
+<%= form_with(model: assessment, class: "space-y-6") do |form| %>
+  <% if assessment.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 border border-red-200 rounded-lg p-4">
+      <h4 class="text-red-800 font-semibold mb-2">
+        <%= pluralize(assessment.errors.count, "error") %> prohibited this assessment from being saved:
+      </h4>
+      <ul class="list-disc list-inside text-red-700 space-y-1">
+        <% assessment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Basic Information -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Basic Information</h3>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <%= form.label :parcel_number, class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.text_field :parcel_number, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500", 
+              required: true %>
+        </div>
+        <div>
+          <%= form.label :assessment_date, class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.date_field :assessment_date, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500", 
+              required: true, 
+              value: Date.today %>
+        </div>
+        <div>
+          <%= form.label :assessor_name, class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.text_field :assessor_name, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500", 
+              required: true %>
+        </div>
+        <div>
+          <%= form.label :property_address, class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.text_field :property_address, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500", 
+              required: true %>
+        </div>
+        <div>
+          <%= form.label :latitude, class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.number_field :latitude, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500", 
+              step: :any %>
+        </div>
+        <div>
+          <%= form.label :longitude, class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.number_field :longitude, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500", 
+              step: :any %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Access Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Access Assessment</h3>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <%= form.label :gate, "Locked Gate Blocking Access", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :gate, options_for_select([
+              ["No locked gate", 1],
+              ["Locked gate with combo/key available", 2],
+              ["Locked gate - no access", 3]
+            ], assessment.gate), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          <p class="mt-1 text-sm text-gray-500">Higher values indicate greater access difficulty</p>
+        </div>
+        <div>
+          <%= form.label :ing_egg, "Ingress and Egress", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :ing_egg, options_for_select([
+              ["Two or more roads in/out", 1],
+              ["One road in/out", 2],
+              ["One way in/out - dead end", 3]
+            ], assessment.ing_egg), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :road_cond, "All-Season Road Condition", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :road_cond, options_for_select([
+              ["Surfaced road, grade < 5%", 1],
+              ["Non-surfaced road, grade < 5%", 2],
+              ["Non-surfaced road, grade > 5%", 3]
+            ], assessment.road_cond), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :bridge_weight, "Bridge Weight Limits", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :bridge_weight, options_for_select([
+              ["No bridge or adequate", 1],
+              ["Bridge with weight limits", 2]
+            ], assessment.bridge_weight), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :driveway_width, "Driveway Width", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :driveway_width, options_for_select([
+              ["> 20 feet", 1],
+              ["12-20 feet", 2],
+              ["< 12 feet", 3]
+            ], assessment.driveway_width), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :drivelen, "Driveway Length", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :drivelen, options_for_select([
+              ["< 100 feet", 1],
+              ["100-200 feet", 2],
+              ["200-300 feet", 3],
+              ["> 300 feet", 4]
+            ], assessment.drivelen), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :turn, "Adequate Turnaround", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :turn, options_for_select([
+              ["Adequate turnaround", 1],
+              ["No adequate turnaround", 2]
+            ], assessment.turn), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Structure Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Structure Assessment</h3>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <%= form.label :roof, "Roofing Material", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :roof, options_for_select([
+              ["Metal, tile, or other non-combustible", 1],
+              ["Class A composition", 2],
+              ["Class B composition", 3],
+              ["Wood shake/shingle", 4]
+            ], assessment.roof), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          <p class="mt-1 text-sm text-gray-500">Lower values indicate better fire resistance</p>
+        </div>
+        <div>
+          <%= form.label :clean, "Roof Cleanliness", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :clean, options_for_select([
+              ["Clean of debris", 1],
+              ["Debris on roof", 2]
+            ], assessment.clean), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :eaves, "Eaves", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :eaves, options_for_select([
+              ["Enclosed/boxed", 1],
+              ["Open with blocking", 2],
+              ["Open/exposed", 3]
+            ], assessment.eaves), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :vents, "Vents", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :vents, options_for_select([
+              ["Screened < 1/8 inch", 1],
+              ["Not screened or > 1/8 inch", 2]
+            ], assessment.vents), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :bld_ext, "Exterior Walls", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :bld_ext, options_for_select([
+              ["Non-combustible", 1],
+              ["Fire-resistant", 2],
+              ["Combustible - log", 3],
+              ["Combustible - wood", 4]
+            ], assessment.bld_ext), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :decks, "Decks and Porches", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :decks, options_for_select([
+              ["None or non-combustible", 1],
+              ["Combustible - enclosed underneath", 2],
+              ["Combustible - open underneath", 3]
+            ], assessment.decks), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :comb_mat, "Combustibles Near Structure", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :comb_mat, options_for_select([
+              ["None", 1],
+              ["Sparse", 2],
+              ["Abundant", 3]
+            ], assessment.comb_mat), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :propane, "Propane Clearance", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :propane, options_for_select([
+              ["Adequate clearance or no propane", 1],
+              ["Inadequate clearance", 2]
+            ], assessment.propane), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :site_water, "Onsite Water Source", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :site_water, options_for_select([
+              ["Available (pool, pond, tank)", 1],
+              ["Not available", 2]
+            ], assessment.site_water), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vegetation Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Vegetation Assessment</h3>
+    </div>
+    <div class="p-6 space-y-6">
+      <div>
+        <h4 class="text-base font-medium text-gray-800 mb-4">Zone 1: Within 30 feet of structure</h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <%= form.label :fveg_z1, "Tree Canopy", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.select :fveg_z1, options_for_select([
+                ["> 10 ft spacing", 1],
+                ["6-10 ft spacing", 2],
+                ["< 6 ft spacing", 3]
+              ], assessment.fveg_z1), 
+              { include_blank: "Select..." }, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+          <div>
+            <%= form.label :sveg_z1, "Surface Vegetation", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.select :sveg_z1, options_for_select([
+                ["Non-combustible", 1],
+                ["Grass/forbs - green", 2],
+                ["Grass - cured", 3],
+                ["Shrubs", 4]
+              ], assessment.sveg_z1), 
+              { include_blank: "Select..." }, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+          <div>
+            <%= form.label :lad_fl1, "Ladder Fuels", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.select :lad_fl1, options_for_select([
+                ["None present", 1],
+                ["Present", 2]
+              ], assessment.lad_fl1), 
+              { include_blank: "Select..." }, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="text-base font-medium text-gray-800 mb-4">Zone 2: 30-100 feet from structure</h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <%= form.label :fveg_z2, "Tree Canopy", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.select :fveg_z2, options_for_select([
+                ["> 10 ft spacing", 1],
+                ["6-10 ft spacing", 2],
+                ["< 6 ft spacing", 3]
+              ], assessment.fveg_z2), 
+              { include_blank: "Select..." }, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+          <div>
+            <%= form.label :sveg_z2, "Surface Vegetation", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.select :sveg_z2, options_for_select([
+                ["Non-combustible", 1],
+                ["Grass/forbs", 2],
+                ["Light shrubs", 3],
+                ["Dense shrubs/small trees", 4]
+              ], assessment.sveg_z2), 
+              { include_blank: "Select..." }, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+          <div>
+            <%= form.label :lad_fuel_2, "Ladder Fuels", class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.select :lad_fuel_2, options_for_select([
+                ["None present", 1],
+                ["Present", 2]
+              ], assessment.lad_fuel_2), 
+              { include_blank: "Select..." }, 
+              class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topography Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Topography Assessment</h3>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <%= form.label :contfuel, "Continuous Fire Path to Structure", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :contfuel, options_for_select([
+              ["Light or no fuels", 1],
+              ["Medium fuels", 2],
+              ["Heavy fuels", 3]
+            ], assessment.contfuel), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :struct_alignment, "Structure Alignment", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :struct_alignment, options_for_select([
+              ["Not in alignment with slope/canyon", 1],
+              ["In alignment with slope/canyon", 2]
+            ], assessment.struct_alignment), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :slope, "Slope within 150 feet", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :slope, options_for_select([
+              ["< 10%", 1],
+              ["10-20%", 2],
+              ["21-30%", 3],
+              ["> 30%", 4]
+            ], assessment.slope), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :setback, "Structure Setback from Slope Edge", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :setback, options_for_select([
+              ["> 30 feet", 1],
+              ["10-30 feet", 2],
+              ["< 10 feet", 3]
+            ], assessment.setback), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :pos_slope, "Position on Slope", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :pos_slope, options_for_select([
+              ["Bottom", 1],
+              ["Lower 1/3", 2],
+              ["Mid slope", 3],
+              ["Upper 1/3 or ridge", 4]
+            ], assessment.pos_slope), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+        <div>
+          <%= form.label :aspect, "Predominant Aspect", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= form.select :aspect, options_for_select([
+              ["North", 1],
+              ["East", 2],
+              ["West", 3],
+              ["South", 4]
+            ], assessment.aspect), 
+            { include_blank: "Select..." }, 
+            class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firefighter Risk Factors -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Firefighter Risk Factors</h3>
+    </div>
+    <div class="p-6">
+      <p class="text-sm text-gray-600 mb-4">Check all that apply:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-3">
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :ff_risk_access, 
+                  class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", 
+                  checked_value: 1, 
+                  unchecked_value: 0 %>
+            </div>
+            <div class="ml-3">
+              <%= form.label :ff_risk_access, "Access difficulties", 
+                  class: "text-sm font-medium text-gray-700" %>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :ff_risk_propgas, 
+                  class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", 
+                  checked_value: 1, 
+                  unchecked_value: 0 %>
+            </div>
+            <div class="ml-3">
+              <%= form.label :ff_risk_propgas, "Propane or gas hazards", 
+                  class: "text-sm font-medium text-gray-700" %>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :ff_risk_ohpower, 
+                  class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", 
+                  checked_value: 1, 
+                  unchecked_value: 0 %>
+            </div>
+            <div class="ml-3">
+              <%= form.label :ff_risk_ohpower, "Overhead power lines", 
+                  class: "text-sm font-medium text-gray-700" %>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :ff_risk_pets, 
+                  class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", 
+                  checked_value: 1, 
+                  unchecked_value: 0 %>
+            </div>
+            <div class="ml-3">
+              <%= form.label :ff_risk_pets, "Dangerous pets", 
+                  class: "text-sm font-medium text-gray-700" %>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :ff_risk_hazmat, 
+                  class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", 
+                  checked_value: 1, 
+                  unchecked_value: 0 %>
+            </div>
+            <div class="ml-3">
+              <%= form.label :ff_risk_hazmat, "Hazardous materials", 
+                  class: "text-sm font-medium text-gray-700" %>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :ff_risk_escape_safety, 
+                  class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", 
+                  checked_value: 1, 
+                  unchecked_value: 0 %>
+            </div>
+            <div class="ml-3">
+              <%= form.label :ff_risk_escape_safety, "Poor escape routes", 
+                  class: "text-sm font-medium text-gray-700" %>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <%= form.check_box :ff_risk_solar, 
+                  class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", 
+                  checked_value: 1, 
+                  unchecked_value: 0 %>
+            </div>
+            <div class="ml-3">
+              <%= form.label :ff_risk_solar, "Solar electric systems", 
+                  class: "text-sm font-medium text-gray-700" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Additional Notes</h3>
+    </div>
+    <div class="p-6">
+      <%= form.label :notes, class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.text_area :notes, 
+          rows: 4, 
+          class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="flex justify-end space-x-4">
+    <%= link_to "Cancel", assessments_path, 
+        class: "px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    <%= form.submit "Save Assessment", 
+        class: "px-6 py-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
+  </div>
+<% end %>
+
+<script>
+  // Add any JavaScript for form enhancements here
+  // For example, dynamic calculation preview, field dependencies, etc.
+</script>

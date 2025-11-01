@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_27_114004) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_28_194739) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -59,6 +59,59 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_27_114004) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_articles_on_user_id"
+  end
+
+  create_table "assessments", force: :cascade do |t|
+    t.string "parcel_number"
+    t.date "assessment_date"
+    t.string "assessor_name"
+    t.string "property_address"
+    t.integer "gate"
+    t.integer "ing_egg"
+    t.integer "road_cond"
+    t.integer "bridge_weight"
+    t.integer "driveway_width"
+    t.integer "drivelen"
+    t.integer "turn"
+    t.integer "roof"
+    t.integer "clean"
+    t.integer "eaves"
+    t.integer "vents"
+    t.integer "bld_ext"
+    t.integer "decks"
+    t.integer "comb_mat"
+    t.integer "propane"
+    t.integer "site_water"
+    t.integer "fveg_z1"
+    t.integer "sveg_z1"
+    t.integer "lad_fl1"
+    t.integer "fveg_z2"
+    t.integer "sveg_z2"
+    t.integer "lad_fuel_2"
+    t.integer "contfuel"
+    t.integer "struct_alignment"
+    t.integer "slope"
+    t.integer "setback"
+    t.integer "pos_slope"
+    t.integer "aspect"
+    t.integer "ff_risk_access"
+    t.integer "ff_risk_propgas"
+    t.integer "ff_risk_ohpower"
+    t.integer "ff_risk_pets"
+    t.integer "ff_risk_hazmat"
+    t.integer "ff_risk_escape_safety"
+    t.integer "ff_risk_solar"
+    t.integer "risk_category"
+    t.decimal "total_score", precision: 10, scale: 2
+    t.text "notes"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assessment_date"], name: "index_assessments_on_assessment_date"
+    t.index ["latitude", "longitude"], name: "index_assessments_on_latitude_and_longitude"
+    t.index ["parcel_number"], name: "index_assessments_on_parcel_number"
+    t.index ["risk_category"], name: "index_assessments_on_risk_category"
   end
 
   create_table "users", force: :cascade do |t|

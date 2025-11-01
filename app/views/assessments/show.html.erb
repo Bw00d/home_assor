@@ -1,0 +1,424 @@
+<!-- app/views/assessments/show.html.erb -->
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <!-- Header with Actions -->
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-gray-900">Assessment Details</h1>
+    <div class="flex space-x-3">
+      <%= link_to "Edit", edit_assessment_path(@assessment), 
+          class: "px-4 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-blue-50" %>
+      <%= link_to "Back to List", assessments_path, 
+          class: "px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50" %>
+    </div>
+  </div>
+
+  <!-- Overall Risk Summary -->
+  <div class="bg-white shadow-lg rounded-lg border border-gray-200 mb-8">
+    <div class="p-8 text-center">
+      <% case @assessment.risk_category %>
+      <% when 'high' %>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+          The risk to your structure is <span class="text-red-600 font-bold text-3xl">HIGH</span>
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          There are a lot of easy things you could do to improve your structure's survivability during a wildfire.
+        </p>
+      <% when 'moderate' %>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+          Your risk to your structure is <span class="text-orange-600 font-bold text-3xl">MODERATE</span>
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          There may be things you can do to lower your risk.
+        </p>
+      <% when 'low' %>
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+          Congratulations, your wildfire risk is <span class="text-green-600 font-bold text-3xl">LOW</span>
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          It may require periodic maintenance to keep your risk low.
+        </p>
+      <% end %>
+      
+      <div class="mt-6 pt-6 border-t border-gray-200">
+        <p class="text-sm text-gray-500">
+          Total Risk Score: <span class="font-semibold text-lg"><%= @assessment.total_score %></span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Basic Information -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-6">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Basic Information</h3>
+    </div>
+    <div class="p-6">
+      <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Parcel Number</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @assessment.parcel_number %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Assessment Date</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @assessment.assessment_date.strftime("%B %d, %Y") %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Assessor Name</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @assessment.assessor_name %></dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Property Address</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @assessment.property_address %></dd>
+        </div>
+        <% if @assessment.latitude.present? && @assessment.longitude.present? %>
+          <div class="md:col-span-2">
+            <dt class="text-sm font-medium text-gray-500">Coordinates</dt>
+            <dd class="mt-1 text-sm text-gray-900">
+              <%= @assessment.latitude %>, <%= @assessment.longitude %>
+            </dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Access Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-6">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Access Assessment</h3>
+    </div>
+    <div class="p-6">
+      <!-- Category Risk Summary -->
+      <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+        <p class="text-sm">
+          <span class="font-medium">Access Risk Score:</span> 
+          <span class="<%= risk_score_color(@assessment.access_risk_score) %> font-semibold">
+            <%= @assessment.access_risk_score %>
+          </span>
+          <% if @assessment.access_risk_score > 5 %>
+            - Consider improving driveway access and turnaround areas
+          <% elsif @assessment.access_risk_score > 2 %>
+            - Some access improvements could help emergency responders
+          <% else %>
+            - Good access for emergency vehicles
+          <% end %>
+        </p>
+      </div>
+      
+      <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <%= render 'assessment_field', 
+            label: "Locked Gate Blocking Access", 
+            value: gate_display(@assessment.gate),
+            score_impact: gate_score(@assessment.gate) %>
+        <%= render 'assessment_field', 
+            label: "Ingress and Egress", 
+            value: ing_egg_display(@assessment.ing_egg),
+            score_impact: ing_egg_score(@assessment.ing_egg) %>
+        <%= render 'assessment_field', 
+            label: "All-Season Road Condition", 
+            value: road_cond_display(@assessment.road_cond),
+            score_impact: road_cond_score(@assessment.road_cond) %>
+        <%= render 'assessment_field', 
+            label: "Bridge Weight Limits", 
+            value: bridge_weight_display(@assessment.bridge_weight),
+            score_impact: bridge_weight_score(@assessment.bridge_weight) %>
+        <%= render 'assessment_field', 
+            label: "Driveway Width", 
+            value: driveway_width_display(@assessment.driveway_width),
+            score_impact: driveway_width_score(@assessment.driveway_width) %>
+        <%= render 'assessment_field', 
+            label: "Driveway Length", 
+            value: drivelen_display(@assessment.drivelen),
+            score_impact: drivelen_score(@assessment.drivelen) %>
+        <%= render 'assessment_field', 
+            label: "Adequate Turnaround", 
+            value: turn_display(@assessment.turn),
+            score_impact: turn_score(@assessment.turn) %>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Structure Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-6">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Structure Assessment</h3>
+    </div>
+    <div class="p-6">
+      <!-- Category Risk Summary -->
+      <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+        <p class="text-sm">
+          <span class="font-medium">Structure Risk Score:</span> 
+          <span class="<%= risk_score_color(@assessment.structure_risk_score) %> font-semibold">
+            <%= @assessment.structure_risk_score %>
+          </span>
+          <% if @assessment.structure_risk_score > -5 %>
+            - Structure has several vulnerabilities to ember intrusion
+          <% elsif @assessment.structure_risk_score > -10 %>
+            - Some hardening improvements would increase survivability
+          <% else %>
+            - Well-hardened structure against wildfire
+          <% end %>
+        </p>
+      </div>
+      
+      <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <%= render 'assessment_field', 
+            label: "Roofing Material", 
+            value: roof_display(@assessment.roof),
+            score_impact: roof_score(@assessment.roof) %>
+        <%= render 'assessment_field', 
+            label: "Roof Cleanliness", 
+            value: clean_display(@assessment.clean),
+            score_impact: clean_score(@assessment.clean) %>
+        <%= render 'assessment_field', 
+            label: "Eaves", 
+            value: eaves_display(@assessment.eaves),
+            score_impact: eaves_score(@assessment.eaves) %>
+        <%= render 'assessment_field', 
+            label: "Vents", 
+            value: vents_display(@assessment.vents),
+            score_impact: vents_score(@assessment.vents) %>
+        <%= render 'assessment_field', 
+            label: "Exterior Walls", 
+            value: bld_ext_display(@assessment.bld_ext),
+            score_impact: bld_ext_score(@assessment.bld_ext) %>
+        <%= render 'assessment_field', 
+            label: "Decks and Porches", 
+            value: decks_display(@assessment.decks),
+            score_impact: decks_score(@assessment.decks) %>
+        <%= render 'assessment_field', 
+            label: "Combustibles Near Structure", 
+            value: comb_mat_display(@assessment.comb_mat),
+            score_impact: comb_mat_score(@assessment.comb_mat) %>
+        <%= render 'assessment_field', 
+            label: "Propane Clearance", 
+            value: propane_display(@assessment.propane),
+            score_impact: propane_score(@assessment.propane) %>
+        <%= render 'assessment_field', 
+            label: "Onsite Water Source", 
+            value: site_water_display(@assessment.site_water),
+            score_impact: site_water_score(@assessment.site_water) %>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Vegetation Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-6">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Vegetation Assessment</h3>
+    </div>
+    <div class="p-6">
+      <!-- Category Risk Summary -->
+      <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+        <p class="text-sm">
+          <span class="font-medium">Vegetation Risk Score:</span> 
+          <span class="<%= risk_score_color(@assessment.vegetation_risk_score) %> font-semibold">
+            <%= @assessment.vegetation_risk_score %>
+          </span>
+          <% if @assessment.vegetation_risk_score > -5 %>
+            - Vegetation poses significant fire risk
+          <% elsif @assessment.vegetation_risk_score > -10 %>
+            - Some vegetation management would reduce risk
+          <% else %>
+            - Good defensible space around structure
+          <% end %>
+        </p>
+      </div>
+      
+      <div class="space-y-6">
+        <div>
+          <h4 class="text-base font-medium text-gray-800 mb-3">Zone 1: Within 30 feet of structure</h4>
+          <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <%= render 'assessment_field', 
+                label: "Tree Canopy", 
+                value: fveg_z1_display(@assessment.fveg_z1),
+                score_impact: fveg_z1_score(@assessment.fveg_z1) %>
+            <%= render 'assessment_field', 
+                label: "Surface Vegetation", 
+                value: sveg_z1_display(@assessment.sveg_z1),
+                score_impact: sveg_z1_score(@assessment.sveg_z1) %>
+            <%= render 'assessment_field', 
+                label: "Ladder Fuels", 
+                value: lad_fl1_display(@assessment.lad_fl1),
+                score_impact: lad_fl1_score(@assessment.lad_fl1) %>
+          </dl>
+        </div>
+        
+        <div class="pt-4 border-t border-gray-200">
+          <h4 class="text-base font-medium text-gray-800 mb-3">Zone 2: 30-100 feet from structure</h4>
+          <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+            <%= render 'assessment_field', 
+                label: "Tree Canopy", 
+                value: fveg_z2_display(@assessment.fveg_z2),
+                score_impact: fveg_z2_score(@assessment.fveg_z2) %>
+            <%= render 'assessment_field', 
+                label: "Surface Vegetation", 
+                value: sveg_z2_display(@assessment.sveg_z2),
+                score_impact: sveg_z2_score(@assessment.sveg_z2) %>
+            <%= render 'assessment_field', 
+                label: "Ladder Fuels", 
+                value: lad_fuel_2_display(@assessment.lad_fuel_2),
+                score_impact: lad_fuel_2_score(@assessment.lad_fuel_2) %>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topography Assessment -->
+  <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-6">
+    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-900">Topography Assessment</h3>
+    </div>
+    <div class="p-6">
+      <!-- Category Risk Summary -->
+      <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+        <p class="text-sm">
+          <span class="font-medium">Topography Risk Score:</span> 
+          <span class="<%= risk_score_color(@assessment.topography_risk_score) %> font-semibold">
+            <%= @assessment.topography_risk_score %>
+          </span>
+          <% if @assessment.topography_risk_score > 5 %>
+            - Challenging topography increases fire behavior risk
+          <% elsif @assessment.topography_risk_score > 2 %>
+            - Some topographic concerns present
+          <% else %>
+            - Favorable topographic position
+          <% end %>
+        </p>
+      </div>
+      
+      <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <%= render 'assessment_field', 
+            label: "Continuous Fire Path", 
+            value: contfuel_display(@assessment.contfuel),
+            score_impact: contfuel_score(@assessment.contfuel) %>
+        <%= render 'assessment_field', 
+            label: "Structure Alignment", 
+            value: struct_alignment_display(@assessment.struct_alignment),
+            score_impact: struct_alignment_score(@assessment.struct_alignment) %>
+        <%= render 'assessment_field', 
+            label: "Slope within 150 feet", 
+            value: slope_display(@assessment.slope),
+            score_impact: slope_score(@assessment.slope) %>
+        <%= render 'assessment_field', 
+            label: "Setback from Slope Edge", 
+            value: setback_display(@assessment.setback),
+            score_impact: setback_score(@assessment.setback) %>
+        <%= render 'assessment_field', 
+            label: "Position on Slope", 
+            value: pos_slope_display(@assessment.pos_slope),
+            score_impact: pos_slope_score(@assessment.pos_slope) %>
+        <%= render 'assessment_field', 
+            label: "Predominant Aspect", 
+            value: aspect_display(@assessment.aspect),
+            score_impact: aspect_score(@assessment.aspect) %>
+      </dl>
+    </div>
+  </div>
+
+  <!-- Firefighter Risk Factors -->
+  <% if has_firefighter_risks?(@assessment) %>
+    <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-6">
+      <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900">Firefighter Risk Factors</h3>
+      </div>
+      <div class="p-6">
+        <div class="mb-4">
+          <p class="text-sm text-gray-600">
+            <span class="font-medium">Total Risk Factors:</span> 
+            <span class="text-red-600 font-semibold"><%= @assessment.firefighter_risk_count %></span>
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <% if @assessment.ff_risk_access == 1 %>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">Access difficulties</span>
+            </div>
+          <% end %>
+          <% if @assessment.ff_risk_propgas == 1 %>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">Propane or gas hazards</span>
+            </div>
+          <% end %>
+          <% if @assessment.ff_risk_ohpower == 1 %>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">Overhead power lines</span>
+            </div>
+          <% end %>
+          <% if @assessment.ff_risk_pets == 1 %>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">Dangerous pets</span>
+            </div>
+          <% end %>
+          <% if @assessment.ff_risk_hazmat == 1 %>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">Hazardous materials</span>
+            </div>
+          <% end %>
+          <% if @assessment.ff_risk_escape_safety == 1 %>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">Poor escape routes</span>
+            </div>
+          <% end %>
+          <% if @assessment.ff_risk_solar == 1 %>
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-sm">Solar electric systems</span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Additional Notes -->
+  <% if @assessment.notes.present? %>
+    <div class="bg-white shadow-sm rounded-lg border border-gray-200 mb-6">
+      <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900">Additional Notes</h3>
+      </div>
+      <div class="p-6">
+        <p class="text-sm text-gray-700 whitespace-pre-wrap"><%= @assessment.notes %></p>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Actions -->
+  <div class="flex justify-center space-x-4 mt-8">
+    <%= link_to "Edit Assessment", edit_assessment_path(@assessment), 
+        class: "px-6 py-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700" %>
+    <%= link_to "Print Report", "#", 
+        onclick: "window.print(); return false;",
+        class: "px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50" %>
+  </div>
+</div>
+
+<!-- Print styles -->
+<style>
+  @media print {
+    .no-print { display: none !important; }
+    body { font-size: 12pt; }
+    .shadow-sm, .shadow-lg { box-shadow: none !important; }
+  }
+</style>
