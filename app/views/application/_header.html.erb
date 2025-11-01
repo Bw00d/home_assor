@@ -22,6 +22,7 @@
               </a>
             <% else %>
               <%= link_to "Sign in", new_user_session_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium" %>
+              <%= link_to "Sign up", new_user_registration_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-md text-sm font-medium ml-2" %>
             <% end %>
           </div>
         </div>
@@ -41,6 +42,7 @@
       <a href="<%= users_path %>" class="<%= nav_link_class("users", "block") %>">Users</a>
       <% unless user_signed_in? %>
         <a href="<%= new_user_session_path %>" class="<%= nav_link_class(nil, "block") %>">Sign in</a>
+        <a href="<%= new_user_registration_path %>" class="<%= nav_link_class(nil, "block") %>">Sign up</a>
       <% end %>
     </div>
     <% if user_signed_in? %>

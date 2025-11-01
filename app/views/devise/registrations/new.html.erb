@@ -1,11 +1,16 @@
-<h2>Sign up</h2>
+<h1>Create Account</h1>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: "false" }) do |f| %>
   <%= render "application/error_messages", object: resource %>
 
   <div>
+    <%= f.label :name %>
+    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+  </div>
+
+  <div>
     <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.email_field :email, autocomplete: "email" %>
   </div>
 
   <div>
@@ -23,5 +28,10 @@
   </div>
 <% end %>
 
-<%= render "devise/shared/social_signin" %>
-<%= render "devise/shared/links" %>
+<div class="mt-8">
+  <%= render "devise/shared/social_signin" %>
+</div>
+
+<div class="mt-4">
+  <%= render "devise/shared/links" %>
+</div>
