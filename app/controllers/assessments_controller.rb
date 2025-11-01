@@ -3,7 +3,13 @@ class AssessmentsController < ApplicationController
 
   # GET /assessments
   def index
-    @assessments = Assessment.all
+    if current_user&.admin?
+      @assessments = Assessment.all
+    elsif user_signed_in?
+      @assessments = current_user.assessments
+    else
+      redirect_to new_user_session_path, alert: "Please sign in to view assessments."
+    end
   end
 
   # GET /assessments/1
@@ -22,6 +28,7 @@ class AssessmentsController < ApplicationController
   # POST /assessments
   def create
     @assessment = Assessment.new(assessment_params)
+    @assessment.user = current_user if user_signed_in?
 
     if @assessment.save
       redirect_to @assessment, notice: "Assessment was successfully created."

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_01_160607) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_01_161412) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -108,10 +108,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_160607) do
     t.decimal "longitude", precision: 10, scale: 6
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["assessment_date"], name: "index_assessments_on_assessment_date"
     t.index ["latitude", "longitude"], name: "index_assessments_on_latitude_and_longitude"
     t.index ["parcel_number"], name: "index_assessments_on_parcel_number"
     t.index ["risk_category"], name: "index_assessments_on_risk_category"
+    t.index ["user_id"], name: "index_assessments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -130,4 +132,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_160607) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "assessments", "users"
 end

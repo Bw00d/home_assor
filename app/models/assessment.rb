@@ -1,5 +1,8 @@
 # app/models/assessment.rb
 class Assessment < ApplicationRecord
+  # Associations
+  belongs_to :user, optional: true
+
   # Validations
   validates :parcel_number, presence: true
   validates :assessment_date, presence: true
