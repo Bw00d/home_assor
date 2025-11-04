@@ -37,7 +37,6 @@ module AssessmentsHelper
     case value
     when 1 then "Two or more roads in/out"
     when 2 then "One road in/out"
-    when 3 then "One way in/out - dead end"
     else "Not assessed"
     end
   end
@@ -48,9 +47,10 @@ module AssessmentsHelper
   
   def road_cond_display(value)
     case value
-    when 1 then "Surfaced road, grade < 5%"
-    when 2 then "Non-surfaced road, grade < 5%"
-    when 3 then "Non-surfaced road, grade > 5%"
+    when 1 then "All weather road, grade < 10%"
+    when 2 then "All weather, grade > 10%"
+    when 3 then "Dry weather road, grade < 10%"
+    when 4 then "Dry weather road, grade > 10%"
     else "Not assessed"
     end
   end
@@ -73,9 +73,9 @@ module AssessmentsHelper
   
   def driveway_width_display(value)
     case value
-    when 1 then "> 20 feet"
-    when 2 then "12-20 feet"
-    when 3 then "< 12 feet"
+    when 1 then "Inaccessible"
+    when 2 then "15 feet or less"
+    when 3 then "16 feet or more"
     else "Not assessed"
     end
   end
@@ -86,10 +86,9 @@ module AssessmentsHelper
   
   def drivelen_display(value)
     case value
-    when 1 then "< 100 feet"
-    when 2 then "100-200 feet"
-    when 3 then "200-300 feet"
-    when 4 then "> 300 feet"
+    when 1 then "Inaccessible"
+    when 2 then "< 150 feet"
+    when 3 then " > 150 feet"
     else "Not assessed"
     end
   end
@@ -114,9 +113,8 @@ module AssessmentsHelper
   def roof_display(value)
     case value
     when 1 then "Metal, tile, or other non-combustible"
-    when 2 then "Class A composition"
-    when 3 then "Class B composition"
-    when 4 then "Wood shake/shingle"
+    when 2 then "Composition"
+    when 3 then "Wood shake/shingle"
     else "Not assessed"
     end
   end
@@ -128,7 +126,8 @@ module AssessmentsHelper
   def clean_display(value)
     case value
     when 1 then "Clean of debris"
-    when 2 then "Debris on roof"
+    when 2 then "Scattered combustibles < 1/2 inch depth"
+    when 3 then "Debris on roof > 1/2 inch or gutters clogged"
     else "Not assessed"
     end
   end
@@ -139,9 +138,9 @@ module AssessmentsHelper
   
   def eaves_display(value)
     case value
-    when 1 then "Enclosed/boxed"
-    when 2 then "Open with blocking"
-    when 3 then "Open/exposed"
+    when 1 then "Boxed or fire treated"
+    when 2 then "Open, not fire treated"
+    when 3 then "Not used"
     else "Not assessed"
     end
   end
@@ -153,7 +152,9 @@ module AssessmentsHelper
   def vents_display(value)
     case value
     when 1 then "Screened < 1/8 inch"
-    when 2 then "Not screened or > 1/8 inch"
+    when 2 then "Screened 1/4 inch"
+    when 3 then "Not screened or > 1/4 inch"
+    when 4 then "No vents"
     else "Not assessed"
     end
   end
@@ -165,9 +166,8 @@ module AssessmentsHelper
   def bld_ext_display(value)
     case value
     when 1 then "Non-combustible"
-    when 2 then "Fire-resistant"
-    when 3 then "Combustible - log"
-    when 4 then "Combustible - wood"
+    when 2 then "Logs, Timbers, Smooth Wood, vinyl"
+    when 3 then "Wood shake or Ember Receptive Siding"
     else "Not assessed"
     end
   end
@@ -178,9 +178,9 @@ module AssessmentsHelper
   
   def decks_display(value)
     case value
-    when 1 then "None or non-combustible"
-    when 2 then "Combustible - enclosed underneath"
-    when 3 then "Combustible - open underneath"
+    when 1 then "None or Non-combustible"
+    when 2 then "Combustible - Enclosed underneath"
+    when 3 then "Combustible - Open underneath"
     else "Not assessed"
     end
   end
@@ -192,8 +192,7 @@ module AssessmentsHelper
   def comb_mat_display(value)
     case value
     when 1 then "None"
-    when 2 then "Sparse"
-    when 3 then "Abundant"
+    when 2 then "Yes"
     else "Not assessed"
     end
   end
@@ -217,7 +216,7 @@ module AssessmentsHelper
   def site_water_display(value)
     case value
     when 1 then "Available (pool, pond, tank)"
-    when 2 then "Not available"
+    when 2 then "None or not sufficient"
     else "Not assessed"
     end
   end
@@ -229,7 +228,7 @@ module AssessmentsHelper
   # Vegetation Assessment Display Methods
   def fveg_z1_display(value)
     case value
-    when 1 then "> 10 ft spacing"
+    when 1 then "None or > 10 ft spacing"
     when 2 then "6-10 ft spacing"
     when 3 then "< 6 ft spacing"
     else "Not assessed"
@@ -242,10 +241,11 @@ module AssessmentsHelper
   
   def sveg_z1_display(value)
     case value
-    when 1 then "Non-combustible"
-    when 2 then "Grass/forbs - green"
-    when 3 then "Grass - cured"
-    when 4 then "Shrubs"
+    when 1 then "Lawn, mowed grass, or Non-combustible"
+    when 2 then "Wild grass, not mowed"
+    when 3 then "Brush"
+    when 4 then "Dead and down woody material (Scattered, light, includes bark dust)"
+    when 5 then "Dead and down woody material (Abundant, heavy, continuous)"
     else "Not assessed"
     end
   end
@@ -257,7 +257,8 @@ module AssessmentsHelper
   def lad_fl1_display(value)
     case value
     when 1 then "None present"
-    when 2 then "Present"
+    when 2 then "Scattered"
+    when 3 then "Abundant"
     else "Not assessed"
     end
   end
@@ -268,7 +269,7 @@ module AssessmentsHelper
   
   def fveg_z2_display(value)
     case value
-    when 1 then "> 10 ft spacing"
+    when 1 then "None or > 10 ft spacing"
     when 2 then "6-10 ft spacing"
     when 3 then "< 6 ft spacing"
     else "Not assessed"
@@ -281,10 +282,11 @@ module AssessmentsHelper
   
   def sveg_z2_display(value)
     case value
-    when 1 then "Non-combustible"
-    when 2 then "Grass/forbs"
-    when 3 then "Light shrubs"
-    when 4 then "Dense shrubs/small trees"
+    when 1 then "Lawn, mowed grass, or Non-combustible"
+    when 2 then "Wild grass, not mowed"
+    when 3 then "Brush"
+    when 4 then "Dead and down woody material (Scattered, light, includes bark dust)"
+    when 5 then "Dead and down woody material (Abundant, heavy, continuous)"
     else "Not assessed"
     end
   end
@@ -296,7 +298,8 @@ module AssessmentsHelper
   def lad_fuel_2_display(value)
     case value
     when 1 then "None present"
-    when 2 then "Present"
+    when 2 then "Scattered"
+    when 3 then "Abundant"
     else "Not assessed"
     end
   end
@@ -308,9 +311,8 @@ module AssessmentsHelper
   # Topography Assessment Display Methods
   def contfuel_display(value)
     case value
-    when 1 then "Light or no fuels"
-    when 2 then "Medium fuels"
-    when 3 then "Heavy fuels"
+    when 1 then "Continuous"
+    when 2 then "Sparse"
     else "Not assessed"
     end
   end
@@ -374,10 +376,11 @@ module AssessmentsHelper
   
   def aspect_display(value)
     case value
-    when 1 then "North"
-    when 2 then "East"
-    when 3 then "West"
+    when 1 then "Flat"
+    when 2 then "North"
+    when 3 then "East"
     when 4 then "South"
+    when 5 then "West"
     else "Not assessed"
     end
   end

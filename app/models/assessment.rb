@@ -11,33 +11,33 @@ class Assessment < ApplicationRecord
   
   # Value ranges for each attribute based on the spreadsheet
   validates :gate, inclusion: { in: 1..3 }, allow_nil: true
-  validates :ing_egg, inclusion: { in: 1..3 }, allow_nil: true
-  validates :road_cond, inclusion: { in: 1..3 }, allow_nil: true
+  validates :ing_egg, inclusion: { in: 1..2 }, allow_nil: true
+  validates :road_cond, inclusion: { in: 1..4 }, allow_nil: true
   validates :bridge_weight, inclusion: { in: 1..2 }, allow_nil: true
   validates :driveway_width, inclusion: { in: 1..3 }, allow_nil: true
-  validates :drivelen, inclusion: { in: 1..4 }, allow_nil: true
+  validates :drivelen, inclusion: { in: 1..3 }, allow_nil: true
   validates :turn, inclusion: { in: 1..2 }, allow_nil: true
-  validates :roof, inclusion: { in: 1..4 }, allow_nil: true
-  validates :clean, inclusion: { in: 1..2 }, allow_nil: true
+  validates :roof, inclusion: { in: 1..3 }, allow_nil: true
+  validates :clean, inclusion: { in: 1..3 }, allow_nil: true
   validates :eaves, inclusion: { in: 1..3 }, allow_nil: true
-  validates :vents, inclusion: { in: 1..2 }, allow_nil: true
-  validates :bld_ext, inclusion: { in: 1..4 }, allow_nil: true
+  validates :vents, inclusion: { in: 1..4 }, allow_nil: true
+  validates :bld_ext, inclusion: { in: 1..3 }, allow_nil: true
   validates :decks, inclusion: { in: 1..3 }, allow_nil: true
-  validates :comb_mat, inclusion: { in: 1..3 }, allow_nil: true
+  validates :comb_mat, inclusion: { in: 1..2 }, allow_nil: true
   validates :propane, inclusion: { in: 1..2 }, allow_nil: true
   validates :site_water, inclusion: { in: 1..2 }, allow_nil: true
   validates :fveg_z1, inclusion: { in: 1..3 }, allow_nil: true
-  validates :sveg_z1, inclusion: { in: 1..4 }, allow_nil: true
-  validates :lad_fl1, inclusion: { in: 1..2 }, allow_nil: true
+  validates :sveg_z1, inclusion: { in: 1..5 }, allow_nil: true
+  validates :lad_fl1, inclusion: { in: 1..3 }, allow_nil: true
   validates :fveg_z2, inclusion: { in: 1..3 }, allow_nil: true
-  validates :sveg_z2, inclusion: { in: 1..4 }, allow_nil: true
-  validates :lad_fuel_2, inclusion: { in: 1..2 }, allow_nil: true
-  validates :contfuel, inclusion: { in: 1..3 }, allow_nil: true
+  validates :sveg_z2, inclusion: { in: 1..5 }, allow_nil: true
+  validates :lad_fuel_2, inclusion: { in: 1..3 }, allow_nil: true
+  validates :contfuel, inclusion: { in: 1..2 }, allow_nil: true
   validates :struct_alignment, inclusion: { in: 1..2 }, allow_nil: true
   validates :slope, inclusion: { in: 1..4 }, allow_nil: true
   validates :setback, inclusion: { in: 1..3 }, allow_nil: true
   validates :pos_slope, inclusion: { in: 1..4 }, allow_nil: true
-  validates :aspect, inclusion: { in: 1..4 }, allow_nil: true
+  validates :aspect, inclusion: { in: 1..5 }, allow_nil: true
   
   # Callbacks
   before_save :calculate_total_score
@@ -94,39 +94,39 @@ class Assessment < ApplicationRecord
   SCORE_WEIGHTS = {
     # Access scores (positive values = higher risk)
     gate: { 1 => 0.0, 2 => 0.666667, 3 => 1.666667 },
-    ing_egg: { 1 => 0.0, 2 => 0.833333, 3 => 1.666667 },
-    road_cond: { 1 => 0.0, 2 => 0.833333, 3 => 1.666667 },
-    bridge_weight: { 1 => 0.0, 2 => 3.333333 },
-    driveway_width: { 3 => 1.666667, 2 => 0.833333, 1 => 0.0 },
-    drivelen: { 4 => 1.666667, 3 => 1.111111, 2 => 0.555556, 1 => 0.0 },
-    turn: { 1 => 0.0, 2 => 1.666667 },
+    ing_egg: { 1 => 0.0, 2 => 0.833333 },
+    road_cond: { 1 => 0.0, 2 => 0.666667, 3 => 2.666667, 4=> 3.333333 },
+    bridge_weight: { 1 => 0.0, 2 => 1.666666 },
+    driveway_width: { 1 => 1.666667, 2 => 1, 3 => 0.0 },
+    drivelen: { 1 => 1.666667, 2 => 0, 3 => 1},
+    turn: { 1 => 0.0, 2 => 3.333333 },
     
     # Structure scores (negative values = lower risk)
-    roof: { 1 => -3.333333, 2 => -2.5, 3 => -1.666667, 4 => 0.0 },
-    clean: { 1 => -1.666667, 2 => 0.0 },
-    eaves: { 1 => -1.666667, 2 => -0.833333, 3 => 0.0 },
-    vents: { 1 => -1.666667, 2 => 0.0 },
-    bld_ext: { 1 => -1.666667, 2 => -1.25, 3 => -0.833333, 4 => 0.0 },
-    decks: { 1 => 0.0, 2 => 0.833333, 3 => 1.666667 },
-    comb_mat: { 1 => -1.666667, 2 => -0.833333, 3 => 0.0 },
+    roof: { 1 => -3.333333, 2 => -3.3333, 3 => 3.333333},
+    clean: { 1 => -1.666667, 2 => 1, 3 => 1.666667 },
+    eaves: { 1 => -1.666667, 2 => 1.666667, 3 => 0.0 },
+    vents: { 1 => -1.666667, 2 => 0.0, 3 => 1.666667, 4 => 0 },
+    bld_ext: { 1 => -1.666667, 2 => 1.666667, 3 => 3.333333},
+    decks: { 1 => 0.0, 2 => 1.6666667, 3 => 3.333333 },
+    comb_mat: { 1 => -1.666667, 2 => 1.666667 },
     propane: { 1 => 0.0, 2 => 1.666667 },
-    site_water: { 1 => -1.666667, 2 => 0.0 },
+    site_water: { 1 => 0, 2 => 1.666667 },
     
     # Vegetation scores
-    fveg_z1: { 3 => -1.666667, 2 => -0.833333, 1 => 0.0 },
-    sveg_z1: { 4 => -3.333333, 3 => -2.222222, 2 => -1.111111, 1 => 0.0 },
-    lad_fl1: { 1 => -1.666667, 2 => 0.0 },
-    fveg_z2: { 3 => -1.666667, 2 => -0.833333, 1 => 0.0 },
-    sveg_z2: { 4 => -1.666667, 3 => -1.111111, 2 => -0.555556, 1 => 0.0 },
-    lad_fuel_2: { 2 => -1.666667, 1 => 0.0 },
+    fveg_z1: { 1 => -1.666667, 2 => -0.833333, 3 => 3.333333 },
+    sveg_z1: { 1 => -3.333333, 2 => 0, 3 => 1.333333, 4 => 2.666667, 5 => 3.333333 },
+    lad_fl1: { 1 => -1.666667, 2 => 0.0, 3 => 1.666667 },
+    fveg_z2: { 1 => -1.666667, 2 => -0.833333, 3 => 3.333333},
+    sveg_z2: { 1 => -1.66667, 2 => 0, 3 => 0.666667, 4 => 1.333333, 5 => 1.666667 },
+    lad_fuel_2: { 1 => -1.666667, 2 => 0.0, 3 => 1.666667 },
     
     # Topography scores
-    contfuel: { 3 => 3.333333, 2 => 1.666667, 1 => 0.0 },
+    contfuel: { 3 => 3.333333, 2 => 0.0 },
     struct_alignment: { 2 => 1.666667, 1 => 0.0 },
     slope: { 1 => 0.0, 2 => 0.416667, 3 => 0.833333, 4 => 1.666667 },
     setback: { 1 => 0.0, 2 => 0.833333, 3 => 1.666667 },
-    pos_slope: { 1 => 0.0, 2 => 0.416667, 3 => 0.833333, 4 => 1.666667 },
-    aspect: { 1 => 0.0, 2 => 0.416667, 3 => 0.833333, 4 => 1.25 }
+    pos_slope: { 1 => 0.0, 2 => 0.666667, 3 => 1, 4 => 1.666667 },
+    aspect: { 1 => 0.0, 2 => 0.666667, 3 => 1, 4 => 1.666667, 5 => 1.666667 }
   }.freeze
   
   # Calculate total risk score

@@ -83,8 +83,7 @@
           <%= form.label :ing_egg, "Ingress and Egress", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :ing_egg, options_for_select([
               ["Two or more roads in/out", 1],
-              ["One road in/out", 2],
-              ["One way in/out - dead end", 3]
+              ["One road in/out", 2]
             ], assessment.ing_egg), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -92,9 +91,10 @@
         <div>
           <%= form.label :road_cond, "All-Season Road Condition", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :road_cond, options_for_select([
-              ["Surfaced road, grade < 5%", 1],
-              ["Non-surfaced road, grade < 5%", 2],
-              ["Non-surfaced road, grade > 5%", 3]
+              ["All weather road, grade < 10%", 1],
+              [ "All weather, grade > 10%", 2],
+              ["Dry weather road, grade < 10%", 3],
+              ["Dry weather road, grade > 10%", 4]
             ], assessment.road_cond), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -111,9 +111,9 @@
         <div>
           <%= form.label :driveway_width, "Driveway Width", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :driveway_width, options_for_select([
-              ["> 20 feet", 1],
-              ["12-20 feet", 2],
-              ["< 12 feet", 3]
+              ["Inaccessible", 1],
+              ["15 feet or less", 2],
+              ["16 feet or moret", 3]
             ], assessment.driveway_width), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -121,10 +121,9 @@
         <div>
           <%= form.label :drivelen, "Driveway Length", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :drivelen, options_for_select([
-              ["< 100 feet", 1],
-              ["100-200 feet", 2],
-              ["200-300 feet", 3],
-              ["> 300 feet", 4]
+              ["Inaccessiblet", 1],
+              ["< 150 feet", 2],
+              [" > 150 feet", 3]
             ], assessment.drivelen), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -153,9 +152,8 @@
           <%= form.label :roof, "Roofing Material", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :roof, options_for_select([
               ["Metal, tile, or other non-combustible", 1],
-              ["Class A composition", 2],
-              ["Class B composition", 3],
-              ["Wood shake/shingle", 4]
+              ["Composition", 2],
+              ["Wood shake/shingle", 3]
             ], assessment.roof), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -165,7 +163,8 @@
           <%= form.label :clean, "Roof Cleanliness", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :clean, options_for_select([
               ["Clean of debris", 1],
-              ["Debris on roof", 2]
+              ["Scattered combustibles < 1/2 inch depth", 2],
+              ["Debris on roof > 1/2 inch or gutters clogged", 3]
             ], assessment.clean), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -173,9 +172,9 @@
         <div>
           <%= form.label :eaves, "Eaves", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :eaves, options_for_select([
-              ["Enclosed/boxed", 1],
-              ["Open with blocking", 2],
-              ["Open/exposed", 3]
+              ["Boxed or fire treated", 1],
+              ["Open, not fire treated", 2],
+              ["Not used", 3]
             ], assessment.eaves), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -184,7 +183,9 @@
           <%= form.label :vents, "Vents", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :vents, options_for_select([
               ["Screened < 1/8 inch", 1],
-              ["Not screened or > 1/8 inch", 2]
+              ["Screened 1/4 inch", 2],
+              ["Not screened or > 1/4 inch", 3],
+              ["No vents", 4]
             ], assessment.vents), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -193,9 +194,8 @@
           <%= form.label :bld_ext, "Exterior Walls", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :bld_ext, options_for_select([
               ["Non-combustible", 1],
-              ["Fire-resistant", 2],
-              ["Combustible - log", 3],
-              ["Combustible - wood", 4]
+              ["Logs, Timbers, Smooth Wood, vinyl", 2],
+              ["Wood shake or Ember Receptive Siding", 3]
             ], assessment.bld_ext), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -204,8 +204,8 @@
           <%= form.label :decks, "Decks and Porches", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :decks, options_for_select([
               ["None or non-combustible", 1],
-              ["Combustible - enclosed underneath", 2],
-              ["Combustible - open underneath", 3]
+              ["Combustible - Enclosed underneath", 2],
+              ["Combustible - Open underneath", 3]
             ], assessment.decks), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -214,8 +214,7 @@
           <%= form.label :comb_mat, "Combustibles Near Structure", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :comb_mat, options_for_select([
               ["None", 1],
-              ["Sparse", 2],
-              ["Abundant", 3]
+              ["Yes", 2]
             ], assessment.comb_mat), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -233,7 +232,7 @@
           <%= form.label :site_water, "Onsite Water Source", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :site_water, options_for_select([
               ["Available (pool, pond, tank)", 1],
-              ["Not available", 2]
+              ["None or not sufficient", 2]
             ], assessment.site_water), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -254,7 +253,7 @@
           <div>
             <%= form.label :fveg_z1, "Tree Canopy", class: "block text-sm font-medium text-gray-700 mb-2" %>
             <%= form.select :fveg_z1, options_for_select([
-                ["> 10 ft spacing", 1],
+                ["None or > 10 ft spacing", 1],
                 ["6-10 ft spacing", 2],
                 ["< 6 ft spacing", 3]
               ], assessment.fveg_z1), 
@@ -264,10 +263,11 @@
           <div>
             <%= form.label :sveg_z1, "Surface Vegetation", class: "block text-sm font-medium text-gray-700 mb-2" %>
             <%= form.select :sveg_z1, options_for_select([
-                ["Non-combustible", 1],
-                ["Grass/forbs - green", 2],
-                ["Grass - cured", 3],
-                ["Shrubs", 4]
+                ["Lawn, mowed grass, or Non-combustible", 1],
+                ["Wild grass, not mowed", 2],
+                ["Brush", 3],
+                ["Dead and down woody material (Scattered, light, includes bark dust)", 4],
+                ["Dead and down woody material (Abundant, heavy, continuous)", 5]
               ], assessment.sveg_z1), 
               { include_blank: "Select..." }, 
               class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -276,7 +276,8 @@
             <%= form.label :lad_fl1, "Ladder Fuels", class: "block text-sm font-medium text-gray-700 mb-2" %>
             <%= form.select :lad_fl1, options_for_select([
                 ["None present", 1],
-                ["Present", 2]
+                ["Scattered", 2],
+                ["Abundant", 3]
               ], assessment.lad_fl1), 
               { include_blank: "Select..." }, 
               class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -290,7 +291,7 @@
           <div>
             <%= form.label :fveg_z2, "Tree Canopy", class: "block text-sm font-medium text-gray-700 mb-2" %>
             <%= form.select :fveg_z2, options_for_select([
-                ["> 10 ft spacing", 1],
+                ["None or > 10 ft spacing", 1],
                 ["6-10 ft spacing", 2],
                 ["< 6 ft spacing", 3]
               ], assessment.fveg_z2), 
@@ -300,10 +301,11 @@
           <div>
             <%= form.label :sveg_z2, "Surface Vegetation", class: "block text-sm font-medium text-gray-700 mb-2" %>
             <%= form.select :sveg_z2, options_for_select([
-                ["Non-combustible", 1],
-                ["Grass/forbs", 2],
-                ["Light shrubs", 3],
-                ["Dense shrubs/small trees", 4]
+                ["Lawn, mowed grass, or Non-combustible", 1],
+                ["Wild grass, not mowed", 2],
+                ["Brush", 3],
+                ["Dead and down woody material (Scattered, light, includes bark dust)", 4],
+                ["Dead and down woody material (Abundant, heavy, continuous)", 5]
               ], assessment.sveg_z2), 
               { include_blank: "Select..." }, 
               class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -312,7 +314,8 @@
             <%= form.label :lad_fuel_2, "Ladder Fuels", class: "block text-sm font-medium text-gray-700 mb-2" %>
             <%= form.select :lad_fuel_2, options_for_select([
                 ["None present", 1],
-                ["Present", 2]
+                ["Scattered", 2],
+                ["Abundant", 3]
               ], assessment.lad_fuel_2), 
               { include_blank: "Select..." }, 
               class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -332,9 +335,8 @@
         <div>
           <%= form.label :contfuel, "Continuous Fire Path to Structure", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :contfuel, options_for_select([
-              ["Light or no fuels", 1],
-              ["Medium fuels", 2],
-              ["Heavy fuels", 3]
+              ["Continuous", 1],
+              ["Sparce", 2]
             ], assessment.contfuel), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
@@ -383,10 +385,11 @@
         <div>
           <%= form.label :aspect, "Predominant Aspect", class: "block text-sm font-medium text-gray-700 mb-2" %>
           <%= form.select :aspect, options_for_select([
-              ["North", 1],
-              ["East", 2],
-              ["West", 3],
-              ["South", 4]
+              ["Flat", 1],
+              ["North", 2],
+              ["East", 3],
+              ["West", 4],
+              ["South", 5]
             ], assessment.aspect), 
             { include_blank: "Select..." }, 
             class: "w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
