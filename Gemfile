@@ -25,6 +25,7 @@ gem "jsbundling-rails", "~> 1.0"
 gem "cssbundling-rails", "~> 1.1"
 gem "turbo-rails", "~> 2.0"
 gem "heroicon", "~> 1.0"
+gem "colorize"
 
 group :development do
   gem "web-console"
