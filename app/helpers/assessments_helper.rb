@@ -5,11 +5,13 @@ module AssessmentsHelper
   # Risk score color helper
   def risk_score_color(score)
     case score
-    when -Float::INFINITY...-10
+    when -Float::INFINITY...0
       "text-green-600"
-    when -10...0
+    when 0
+      "text-green-600"
+    when 0.1...3
       "text-yellow-600"
-    when 0...10
+    when 3...5
       "text-orange-600"
     else
       "text-red-600"
@@ -19,12 +21,14 @@ module AssessmentsHelper
   # Convert score to risk level text
   def score_to_risk_level(score)
     case score
-    when -Float::INFINITY...-10
+    when -Float::INFINITY...0
       "LOW"
-    when -10...0
+    when 0
+      "LOW"
+    when 0.1...3
       "MODERATE"
-    when 0...10
-      "HIGH"
+    when 3...5
+      "MODERATE"
     else
       "HIGH"
     end
@@ -34,7 +38,7 @@ module AssessmentsHelper
   def colored_risk_level(score)
     level = score_to_risk_level(score)
     color = risk_score_color(score)
-    "<span class='#{color} font-semibold'>#{level}</span>".html_safe
+    "<span class='#{color} font-semibold'>#{level} (#{score})</span>".html_safe
   end
 
   # Individual score risk levels for specific attributes
@@ -44,15 +48,15 @@ module AssessmentsHelper
     # Negative scores = lower risk (safer), zero = no risk, positive scores = higher risk
     case score
     when -Float::INFINITY...0
-      "<span class='text-green-600 font-semibold'>LOW</span>".html_safe
+      "<span class='text-green-600 font-semibold'>LOW (#{score})</span>".html_safe
     when 0
-      "<span class='text-green-600 font-semibold'>LOW</span>".html_safe
+      "<span class='text-green-600 font-semibold'>LOW (#{score})</span>".html_safe
     when 0.1...2.5
-      "<span class='text-yellow-600 font-semibold'>MODERATE</span>".html_safe
+      "<span class='text-yellow-600 font-semibold'>MODERATE (#{score})</span>".html_safe
     when 2.5...5
-      "<span class='text-orange-600 font-semibold'>MODERATE</span>".html_safe
+      "<span class='text-orange-600 font-semibold'>MODERATE (#{score})</span>".html_safe
     else
-      "<span class='text-red-600 font-semibold'>HIGH</span>".html_safe
+      "<span class='text-red-600 font-semibold'>HIGH (#{score})</span>".html_safe
     end
   end
   
