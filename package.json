@@ -15,7 +15,8 @@
   },
   "scripts": {
     "build": "./node_modules/.bin/esbuild app/javascript/*.* --bundle --outdir=app/assets/builds",
-    "build:css": "./node_modules/.bin/tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify",
-    "heroku-postbuild": "yarn run build && yarn run build:css"
+    "build:css": "node ./node_modules/@tailwindcss/cli/dist/index.mjs -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify",
+    "heroku-postbuild": "yarn run build && yarn run build:css",
+    "postinstall": "yarn run build && yarn run build:css"
   }
 }
