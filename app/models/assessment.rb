@@ -4,7 +4,6 @@ class Assessment < ApplicationRecord
   belongs_to :user, optional: true
 
   # Validations
-  validates :parcel_number, presence: true
   validates :assessment_date, presence: true
   validates :assessor_name, presence: true
   validates :property_address, presence: true
@@ -93,40 +92,40 @@ class Assessment < ApplicationRecord
   # Score weights from the spreadsheet
   SCORE_WEIGHTS = {
     # Access scores (positive values = higher risk)
-    gate: { 1 => 0.0, 2 => 0.666667, 3 => 1.666667 },
-    ing_egg: { 1 => 0.0, 2 => 0.833333 },
-    road_cond: { 1 => 0.0, 2 => 0.666667, 3 => 2.666667, 4=> 3.333333 },
-    bridge_weight: { 1 => 0.0, 2 => 1.666666 },
-    driveway_width: { 1 => 1.666667, 2 => 1, 3 => 0.0 },
-    drivelen: { 1 => 1.666667, 2 => 0, 3 => 1},
-    turn: { 1 => 0.0, 2 => 3.333333 },
+    gate: { 1 => 0, 2 => 2, 3 => 5 },
+    ing_egg: { 1 => 0.0, 2 => 2.5 },
+    road_cond: { 1 => 0.0, 2 => 2, 3 => 8, 4 => 10 },
+    bridge_weight: { 1 => 0.0, 2 => 5 },
+    driveway_width: { 1 => 5, 2 => 3, 3 => 0.0 },
+    drivelen: { 1 => 5, 2 => 0, 3 => 3},
+    turn: { 1 => 0.0, 2 => 10 },
     
     # Structure scores (negative values = lower risk)
-    roof: { 1 => -3.333333, 2 => -3.3333, 3 => 3.333333},
-    clean: { 1 => -1.666667, 2 => 1, 3 => 1.666667 },
-    eaves: { 1 => -1.666667, 2 => 1.666667, 3 => 0.0 },
-    vents: { 1 => -1.666667, 2 => 0.0, 3 => 1.666667, 4 => 0 },
-    bld_ext: { 1 => -1.666667, 2 => 1.666667, 3 => 3.333333},
-    decks: { 1 => 0.0, 2 => 1.6666667, 3 => 3.333333 },
-    comb_mat: { 1 => -1.666667, 2 => 1.666667 },
-    propane: { 1 => 0.0, 2 => 1.666667 },
-    site_water: { 1 => 0, 2 => 1.666667 },
+    roof: { 1 => -10, 2 => -10, 3 => 10},
+    clean: { 1 => -5, 2 => 3, 3 => 5 },
+    eaves: { 1 => -5, 2 => 5, 3 => 0.0 },
+    vents: { 1 => -5, 2 => 0.0, 3 => 5, 4 => 0 },
+    bld_ext: { 1 => -5, 2 => 5, 3 => 10},
+    decks: { 1 => 0.0, 2 => 5, 3 => 10 },
+    comb_mat: { 1 => -5, 2 => 5 },
+    propane: { 1 => 0.0, 2 => 5 },
+    site_water: { 1 => 0, 2 => 5 },
     
     # Vegetation scores
-    fveg_z1: { 1 => -1.666667, 2 => -0.833333, 3 => 3.333333 },
-    sveg_z1: { 1 => -3.333333, 2 => 0, 3 => 1.333333, 4 => 2.666667, 5 => 3.333333 },
-    lad_fl1: { 1 => -1.666667, 2 => 0.0, 3 => 1.666667 },
-    fveg_z2: { 1 => -1.666667, 2 => -0.833333, 3 => 3.333333},
-    sveg_z2: { 1 => -1.66667, 2 => 0, 3 => 0.666667, 4 => 1.333333, 5 => 1.666667 },
-    lad_fuel_2: { 1 => -1.666667, 2 => 0.0, 3 => 1.666667 },
+    fveg_z1: { 1 => -5, 2 => -2.5, 3 => 10 },
+    sveg_z1: { 1 => -10, 2 => 0, 3 => 4, 4 => 8, 5 => 10 },
+    lad_fl1: { 1 => -5, 2 => 0.0, 3 => 5 },
+    fveg_z2: { 1 => -5, 2 => -2.5, 3 => 10},
+    sveg_z2: { 1 => -5, 2 => 0, 3 => 2, 4 => 4, 5 => 5 },
+    lad_fuel_2: { 1 => -5, 2 => 0.0, 3 => 5 },
     
     # Topography scores
-    contfuel: { 3 => 3.333333, 2 => 0.0 },
-    struct_alignment: { 2 => 1.666667, 1 => 0.0 },
-    slope: { 1 => 0.0, 2 => 0.416667, 3 => 0.833333, 4 => 1.666667 },
-    setback: { 1 => 0.0, 2 => 0.833333, 3 => 1.666667 },
-    pos_slope: { 1 => 0.0, 2 => 0.666667, 3 => 1, 4 => 1.666667 },
-    aspect: { 1 => 0.0, 2 => 0.666667, 3 => 1, 4 => 1.666667, 5 => 1.666667 }
+    contfuel: { 3 => 10, 2 => 0.0 },
+    struct_alignment: { 2 => 5, 1 => 0.0 },
+    slope: { 1 => 0.0, 2 => 2, 3 => 3, 4 => 4 },
+    setback: { 1 => 0.0, 2 => 0, 3 => 10 },
+    pos_slope: { 1 => 0.0, 2 => 2, 3 => 3, 4 => 5 },
+    aspect: { 1 => 0.0, 2 => 2, 3 => 3, 4 => 5, 5 => 5 }
   }.freeze
   
   # Calculate total risk score

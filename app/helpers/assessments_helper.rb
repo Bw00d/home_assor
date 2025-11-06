@@ -15,6 +15,46 @@ module AssessmentsHelper
       "text-red-600"
     end
   end
+
+  # Convert score to risk level text
+  def score_to_risk_level(score)
+    case score
+    when -Float::INFINITY...-10
+      "LOW"
+    when -10...0
+      "MODERATE"
+    when 0...10
+      "HIGH"
+    else
+      "HIGH"
+    end
+  end
+
+  # Generate colored risk level text
+  def colored_risk_level(score)
+    level = score_to_risk_level(score)
+    color = risk_score_color(score)
+    "<span class='#{color} font-semibold'>#{level}</span>".html_safe
+  end
+
+  # Individual score risk levels for specific attributes
+  def individual_score_risk_level(score)
+    return "<span class='text-gray-400'>N/A</span>".html_safe if score.nil?
+    
+    # Negative scores = lower risk (safer), zero = no risk, positive scores = higher risk
+    case score
+    when -Float::INFINITY...0
+      "<span class='text-green-600 font-semibold'>LOW</span>".html_safe
+    when 0
+      "<span class='text-green-600 font-semibold'>LOW</span>".html_safe
+    when 0.1...2.5
+      "<span class='text-yellow-600 font-semibold'>MODERATE</span>".html_safe
+    when 2.5...5
+      "<span class='text-orange-600 font-semibold'>MODERATE</span>".html_safe
+    else
+      "<span class='text-red-600 font-semibold'>HIGH</span>".html_safe
+    end
+  end
   
   # Check if assessment has any firefighter risks
   def has_firefighter_risks?(assessment)
@@ -36,7 +76,8 @@ module AssessmentsHelper
   end
   
   def gate_score(value)
-    Assessment::SCORE_WEIGHTS[:gate][value]
+    score = Assessment::SCORE_WEIGHTS[:gate][value]
+    individual_score_risk_level(score)
   end
   
   def ing_egg_display(value)
@@ -51,7 +92,8 @@ module AssessmentsHelper
   end
   
   def ing_egg_score(value)
-    Assessment::SCORE_WEIGHTS[:ing_egg][value]
+    score = Assessment::SCORE_WEIGHTS[:ing_egg][value]
+    individual_score_risk_level(score)
   end
   
   def road_cond_display(value)
@@ -69,7 +111,8 @@ module AssessmentsHelper
   end
   
   def road_cond_score(value)
-    Assessment::SCORE_WEIGHTS[:road_cond][value]
+    score = Assessment::SCORE_WEIGHTS[:road_cond][value]
+    individual_score_risk_level(score)
   end
   
   def bridge_weight_display(value)
@@ -83,7 +126,8 @@ module AssessmentsHelper
   end
   
   def bridge_weight_score(value)
-    Assessment::SCORE_WEIGHTS[:bridge_weight][value]
+    score = Assessment::SCORE_WEIGHTS[:bridge_weight][value]
+    individual_score_risk_level(score)
   end
   
   def driveway_width_display(value)
@@ -99,7 +143,8 @@ module AssessmentsHelper
   end
   
   def driveway_width_score(value)
-    Assessment::SCORE_WEIGHTS[:driveway_width][value]
+    score = Assessment::SCORE_WEIGHTS[:driveway_width][value]
+    individual_score_risk_level(score)
   end
   
   def drivelen_display(value)
@@ -114,7 +159,8 @@ module AssessmentsHelper
   end
   
   def drivelen_score(value)
-    Assessment::SCORE_WEIGHTS[:drivelen][value]
+    score = Assessment::SCORE_WEIGHTS[:drivelen][value]
+    individual_score_risk_level(score)
   end
   
   def turn_display(value)
@@ -128,7 +174,8 @@ module AssessmentsHelper
   end
   
   def turn_score(value)
-    Assessment::SCORE_WEIGHTS[:turn][value]
+    score = Assessment::SCORE_WEIGHTS[:turn][value]
+    individual_score_risk_level(score)
   end
   
   # Structure Assessment Display Methods
@@ -146,7 +193,8 @@ module AssessmentsHelper
   end
   
   def roof_score(value)
-    Assessment::SCORE_WEIGHTS[:roof][value]
+    score = Assessment::SCORE_WEIGHTS[:roof][value]
+    individual_score_risk_level(score)
   end
   
   def clean_display(value)
@@ -162,7 +210,8 @@ module AssessmentsHelper
   end
   
   def clean_score(value)
-    Assessment::SCORE_WEIGHTS[:clean][value]
+    score = Assessment::SCORE_WEIGHTS[:clean][value]
+    individual_score_risk_level(score)
   end
   
   def eaves_display(value)
@@ -177,7 +226,8 @@ module AssessmentsHelper
   end
   
   def eaves_score(value)
-    Assessment::SCORE_WEIGHTS[:eaves][value]
+    score = Assessment::SCORE_WEIGHTS[:eaves][value]
+    individual_score_risk_level(score)
   end
   
   def vents_display(value)
@@ -195,7 +245,8 @@ module AssessmentsHelper
   end
   
   def vents_score(value)
-    Assessment::SCORE_WEIGHTS[:vents][value]
+    score = Assessment::SCORE_WEIGHTS[:vents][value]
+    individual_score_risk_level(score)
   end
   
   def bld_ext_display(value)
@@ -213,7 +264,8 @@ module AssessmentsHelper
   end
   
   def bld_ext_score(value)
-    Assessment::SCORE_WEIGHTS[:bld_ext][value]
+    score = Assessment::SCORE_WEIGHTS[:bld_ext][value]
+    individual_score_risk_level(score)
   end
   
   def decks_display(value)
@@ -230,7 +282,8 @@ module AssessmentsHelper
   end
   
   def decks_score(value)
-    Assessment::SCORE_WEIGHTS[:decks][value]
+    score = Assessment::SCORE_WEIGHTS[:decks][value]
+    individual_score_risk_level(score)
   end
   
   def comb_mat_display(value)
@@ -245,7 +298,8 @@ module AssessmentsHelper
   end
   
   def comb_mat_score(value)
-    Assessment::SCORE_WEIGHTS[:comb_mat][value]
+    score = Assessment::SCORE_WEIGHTS[:comb_mat][value]
+    individual_score_risk_level(score)
   end
   
   def propane_display(value)
@@ -264,7 +318,8 @@ module AssessmentsHelper
   end
   
   def propane_score(value)
-    Assessment::SCORE_WEIGHTS[:propane][value]
+    score = Assessment::SCORE_WEIGHTS[:propane][value]
+    individual_score_risk_level(score)
   end
   
   def site_water_display(value)
@@ -283,7 +338,8 @@ module AssessmentsHelper
   end
   
   def site_water_score(value)
-    Assessment::SCORE_WEIGHTS[:site_water][value]
+    score = Assessment::SCORE_WEIGHTS[:site_water][value]
+    individual_score_risk_level(score)
   end
   
   # Vegetation Assessment Display Methods
@@ -305,7 +361,8 @@ module AssessmentsHelper
   end
   
   def fveg_z1_score(value)
-    Assessment::SCORE_WEIGHTS[:fveg_z1][value]
+    score = Assessment::SCORE_WEIGHTS[:fveg_z1][value]
+    individual_score_risk_level(score)
   end
   
   def sveg_z1_display(value)
@@ -349,7 +406,8 @@ module AssessmentsHelper
   end
   
   def sveg_z1_score(value)
-    Assessment::SCORE_WEIGHTS[:sveg_z1][value]
+    score = Assessment::SCORE_WEIGHTS[:sveg_z1][value]
+    individual_score_risk_level(score)
   end
   
   def lad_fl1_display(value)
@@ -370,7 +428,8 @@ module AssessmentsHelper
   end
   
   def lad_fl1_score(value)
-    Assessment::SCORE_WEIGHTS[:lad_fl1][value]
+    score = Assessment::SCORE_WEIGHTS[:lad_fl1][value]
+    individual_score_risk_level(score)
   end
   
   def fveg_z2_display(value)
@@ -385,7 +444,8 @@ module AssessmentsHelper
   end
   
   def fveg_z2_score(value)
-    Assessment::SCORE_WEIGHTS[:fveg_z2][value]
+    score = Assessment::SCORE_WEIGHTS[:fveg_z2][value]
+    individual_score_risk_level(score)
   end
   
   def sveg_z2_display(value)
@@ -400,7 +460,8 @@ module AssessmentsHelper
   end
   
   def sveg_z2_score(value)
-    Assessment::SCORE_WEIGHTS[:sveg_z2][value]
+    score = Assessment::SCORE_WEIGHTS[:sveg_z2][value]
+    individual_score_risk_level(score)
   end
   
   def lad_fuel_2_display(value)
@@ -413,7 +474,8 @@ module AssessmentsHelper
   end
   
   def lad_fuel_2_score(value)
-    Assessment::SCORE_WEIGHTS[:lad_fuel_2][value]
+    score = Assessment::SCORE_WEIGHTS[:lad_fuel_2][value]
+    individual_score_risk_level(score)
   end
   
   # Topography Assessment Display Methods
@@ -426,7 +488,8 @@ module AssessmentsHelper
   end
   
   def contfuel_score(value)
-    Assessment::SCORE_WEIGHTS[:contfuel][value]
+    score = Assessment::SCORE_WEIGHTS[:contfuel][value]
+    individual_score_risk_level(score)
   end
   
   def struct_alignment_display(value)
@@ -441,7 +504,8 @@ module AssessmentsHelper
   end
   
   def struct_alignment_score(value)
-    Assessment::SCORE_WEIGHTS[:struct_alignment][value]
+    score = Assessment::SCORE_WEIGHTS[:struct_alignment][value]
+    individual_score_risk_level(score)
   end
   
   def slope_display(value)
@@ -458,7 +522,8 @@ module AssessmentsHelper
   end
   
   def slope_score(value)
-    Assessment::SCORE_WEIGHTS[:slope][value]
+    score = Assessment::SCORE_WEIGHTS[:slope][value]
+    individual_score_risk_level(score)
   end
   
   def setback_display(value)
@@ -474,7 +539,8 @@ module AssessmentsHelper
   end
   
   def setback_score(value)
-    Assessment::SCORE_WEIGHTS[:setback][value]
+    score = Assessment::SCORE_WEIGHTS[:setback][value]
+    individual_score_risk_level(score)
   end
   
   def pos_slope_display(value)
@@ -490,7 +556,8 @@ module AssessmentsHelper
   end
   
   def pos_slope_score(value)
-    Assessment::SCORE_WEIGHTS[:pos_slope][value]
+    score = Assessment::SCORE_WEIGHTS[:pos_slope][value]
+    individual_score_risk_level(score)
   end
   
   def aspect_display(value)
@@ -520,6 +587,7 @@ module AssessmentsHelper
   end
   
   def aspect_score(value)
-    Assessment::SCORE_WEIGHTS[:aspect][value]
+    score = Assessment::SCORE_WEIGHTS[:aspect][value]
+    individual_score_risk_level(score)
   end
 end

@@ -91,9 +91,7 @@
       <div class="mb-6 p-4 bg-gray-50 rounded-lg">
         <p class="text-sm">
           <span class="font-medium">Access Risk Score:</span> 
-          <span class="<%= risk_score_color(@assessment.access_risk_score) %> font-semibold">
-            <%= @assessment.access_risk_score %>
-          </span>
+          <%= colored_risk_level(@assessment.access_risk_score) %>
           <% if @assessment.access_risk_score > 5 %>
             - Consider improving driveway access and turnaround areas
           <% elsif @assessment.access_risk_score > 2 %>
@@ -147,9 +145,7 @@
       <div class="mb-6 p-4 bg-gray-50 rounded-lg">
         <p class="text-sm">
           <span class="font-medium">Structure Risk Score:</span> 
-          <span class="<%= risk_score_color(@assessment.structure_risk_score) %> font-semibold">
-            <%= @assessment.structure_risk_score %>
-          </span>
+          <%= colored_risk_level(@assessment.structure_risk_score) %>
           <% if @assessment.structure_risk_score > -5 %>
             - Structure has several vulnerabilities to ember intrusion
           <% elsif @assessment.structure_risk_score > -10 %>
@@ -211,9 +207,7 @@
       <div class="mb-6 p-4 bg-gray-50 rounded-lg">
         <p class="text-sm">
           <span class="font-medium">Vegetation Risk Score:</span> 
-          <span class="<%= risk_score_color(@assessment.vegetation_risk_score) %> font-semibold">
-            <%= @assessment.vegetation_risk_score %>
-          </span>
+          <%= colored_risk_level(@assessment.vegetation_risk_score) %>
           <% if @assessment.vegetation_risk_score > -5 %>
             - Vegetation poses significant fire risk
           <% elsif @assessment.vegetation_risk_score > -10 %>
@@ -274,9 +268,7 @@
       <div class="mb-6 p-4 bg-gray-50 rounded-lg">
         <p class="text-sm">
           <span class="font-medium">Topography Risk Score:</span> 
-          <span class="<%= risk_score_color(@assessment.topography_risk_score) %> font-semibold">
-            <%= @assessment.topography_risk_score %>
-          </span>
+          <%= colored_risk_level(@assessment.topography_risk_score) %>
           <% if @assessment.topography_risk_score > 5 %>
             - Challenging topography increases fire behavior risk
           <% elsif @assessment.topography_risk_score > 2 %>
