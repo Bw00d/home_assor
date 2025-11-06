@@ -15,6 +15,7 @@
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --outdir=app/assets/builds",
-    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify"
+    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify",
+    "heroku-postbuild": "npm run build && npm run build:css"
   }
 }

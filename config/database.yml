@@ -13,4 +13,5 @@ test:
 
 production:
   <<: *default
+  url: <%= ENV.fetch("DATABASE_URL", "") %>
   database: <%= ENV.fetch("DATABASE_NAME", "rails-ralix-tailwind_production")  %>
