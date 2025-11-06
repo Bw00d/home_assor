@@ -257,7 +257,7 @@ module AssessmentsHelper
     recommendations = "Recommendations: Your siding material is vulnerable to direct flames and may be 
                        receptible to blowing embers. It is very important that you have no combustible 
                        material within 5 feet of your structure to limit to potential for ignition of 
-                       the siding. Additionally, it is ideal to have at least 12 inches on non-combustible 
+                       the siding. Additionally, it is ideal to have at least 12 inches of non-combustible 
                        material to the base of your siding to prevent collecting embers from igniting the siding."   
     case value
     when 1 then "Non-combustible"
