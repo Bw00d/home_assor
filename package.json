@@ -14,8 +14,8 @@
     "trix": "^2.1.15"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --outdir=app/assets/builds",
-    "build:css": "npx @tailwindcss/cli -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify",
-    "heroku-postbuild": "npm run build && npm run build:css"
+    "build": "./node_modules/.bin/esbuild app/javascript/*.* --bundle --outdir=app/assets/builds",
+    "build:css": "./node_modules/.bin/tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/application.css --minify",
+    "heroku-postbuild": "yarn run build && yarn run build:css"
   }
 }
